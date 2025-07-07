@@ -234,13 +234,13 @@ def main():
     args = main_arg_parser.parse_args()
 
     all_configs = {
-                   # "center_single": build_center_single(),
-                   # "distribute_four": build_distribute_four(),
-                   # "distribute_nine": build_distribute_nine(),
-                   # "left_center_single_right_center_single": build_left_center_single_right_center_single(),
+                   "center_single": build_center_single(),
+                   "distribute_four": build_distribute_four(),
+                   "distribute_nine": build_distribute_nine(),
+                   "left_center_single_right_center_single": build_left_center_single_right_center_single(),
                    "up_center_single_down_center_single": build_up_center_single_down_center_single(),
-                   # "in_center_single_out_center_single": build_in_center_single_out_center_single(),
-                   # "in_distribute_four_out_center_single": build_in_distribute_four_out_center_single()
+                   "in_center_single_out_center_single": build_in_center_single_out_center_single(),
+                   "in_distribute_four_out_center_single": build_in_distribute_four_out_center_single()
     }
 
     if not os.path.exists(args.save_dir):

@@ -27,8 +27,8 @@ TYPE_MIN = 0
 TYPE_MAX = len(TYPE_VALUES) - 1
 
 # Size
-# SIZE_VALUES = [0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-SIZE_VALUES = [0.4, 0.55, 0.7, 0.85]
+SIZE_VALUES = [0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+# SIZE_VALUES = [0.4, 0.55, 0.7, 0.85]
 SIZE_MIN = 0
 SIZE_MAX = len(SIZE_VALUES) - 1
 
