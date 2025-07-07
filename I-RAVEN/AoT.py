@@ -4,7 +4,7 @@
 import copy
 
 import numpy as np
-from scipy.misc import comb
+from scipy.special import comb
 
 from Attribute import Angle, Color, Number, Position, Size, Type, Uniformity
 from constraints import rule_constraint
@@ -464,7 +464,7 @@ class Layout(AoTNode):
                 rest = new_num
                 select = []
                 while previous_num < rest:
-                    select += xrange(previous_num)
+                    select += list(range(previous_num))
                     rest -= previous_num
                 if rest>0:
                     select += list(np.random.choice(previous_num, rest, replace = False))
@@ -473,7 +473,7 @@ class Layout(AoTNode):
             t = 1
             if mode_3 == '3-Position-Number':
                 t += 1
-            for i in xrange(t):
+            for i in list(range(t)):
                 while True:
                     new_value_idx = self.position.sample_new(new_num) 
                     set_new_value_idx = set(new_value_idx)

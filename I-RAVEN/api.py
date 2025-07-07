@@ -19,20 +19,20 @@ def get_real_bbox(entity_bbox, entity_type, entity_size, entity_angle):
     assert entity_type != "none"
     center = (int(entity_bbox[1] * IMAGE_SIZE), int(entity_bbox[0] * IMAGE_SIZE))
     M = cv2.getRotationMatrix2D(center, entity_angle, 1)
-    unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE / 2
-    delta = DEFAULT_WIDTH * 1.5 / IMAGE_SIZE
+    unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE // 2
+    delta = DEFAULT_WIDTH * 1.5 // IMAGE_SIZE
     if entity_type == "circle":
         radius = unit * entity_size
-        real_bbox = [center[1] * 1.0 / IMAGE_SIZE, center[0] * 1.0 / IMAGE_SIZE, 2 * radius / IMAGE_SIZE + delta, 2 * radius / IMAGE_SIZE + delta]
+        real_bbox = [center[1] * 1.0 // IMAGE_SIZE, center[0] * 1.0 // IMAGE_SIZE, 2 * radius // IMAGE_SIZE + delta, 2 * radius // IMAGE_SIZE + delta]
     else:
         if entity_type == "triangle":
             dl = int(unit * entity_size)
             homo_pts = np.array([[center[0], center[1] - dl, 1], 
-                                 [center[0] + int(dl / 2.0 * np.sqrt(3)), center[1] + int(dl / 2.0), 1], 
-                                 [center[0] - int(dl / 2.0 * np.sqrt(3)), center[1] + int(dl / 2.0), 1]], 
+                                 [center[0] + int(dl // 2.0 * np.sqrt(3)), center[1] + int(dl // 2.0), 1], 
+                                 [center[0] - int(dl // 2.0 * np.sqrt(3)), center[1] + int(dl // 2.0), 1]], 
                                 np.int32)
         if entity_type == "square":
-            dl = int(unit / 2 * np.sqrt(2) * entity_size)
+            dl = int(unit // 2 * np.sqrt(2) * entity_size)
             homo_pts = np.array([[center[0] - dl, center[1] - dl, 1],
                                  [center[0] - dl, center[1] + dl, 1], 
                                  [center[0] + dl, center[1] + dl, 1], 
@@ -41,26 +41,30 @@ def get_real_bbox(entity_bbox, entity_type, entity_size, entity_angle):
         if entity_type == "pentagon":
             dl = int(unit * entity_size)
             homo_pts = np.array([[center[0], center[1] - dl, 1],
-                                 [center[0] - int(dl * np.cos(np.pi / 10)), center[1] - int(dl * np.sin(np.pi / 10)), 1],
-                                 [center[0] - int(dl * np.sin(np.pi / 5)), center[1] + int(dl * np.cos(np.pi / 5)), 1],
-                                 [center[0] + int(dl * np.sin(np.pi / 5)), center[1] + int(dl * np.cos(np.pi / 5)), 1],
-                                 [center[0] + int(dl * np.cos(np.pi / 10)), center[1] - int(dl * np.sin(np.pi / 10)), 1]],
+                                 [center[0] - int(dl * np.cos(np.pi // 10)), center[1] - int(dl * np.sin(np.pi // 10)),
+                                  1],
+                                 [center[0] - int(dl * np.sin(np.pi // 5)), center[1] + int(dl * np.cos(np.pi // 5)),
+                                  1],
+                                 [center[0] + int(dl * np.sin(np.pi // 5)), center[1] + int(dl * np.cos(np.pi // 5)),
+                                  1],
+                                 [center[0] + int(dl * np.cos(np.pi // 10)), center[1] - int(dl * np.sin(np.pi // 10)),
+                                  1]],
                                 np.int32)
         if entity_type == "hexagon":
             dl = int(unit * entity_size)
             homo_pts = np.array([[center[0], center[1] - dl, 1],
-                                 [center[0] - int(dl / 2.0 * np.sqrt(3)), center[1] - int(dl / 2.0), 1],
-                                 [center[0] - int(dl / 2.0 * np.sqrt(3)), center[1] + int(dl / 2.0), 1],
+                                 [center[0] - int(dl // 2.0 * np.sqrt(3)), center[1] - int(dl // 2.0), 1],
+                                 [center[0] - int(dl // 2.0 * np.sqrt(3)), center[1] + int(dl // 2.0), 1],
                                  [center[0], center[1] + dl, 1],
-                                 [center[0] + int(dl / 2.0 * np.sqrt(3)), center[1] + int(dl / 2.0), 1],
-                                 [center[0] + int(dl / 2.0 * np.sqrt(3)), center[1] - int(dl / 2.0), 1]],
+                                 [center[0] + int(dl // 2.0 * np.sqrt(3)), center[1] + int(dl // 2.0), 1],
+                                 [center[0] + int(dl // 2.0 * np.sqrt(3)), center[1] - int(dl // 2.0), 1]],
                                 np.int32)
         after_pts = np.dot(M, homo_pts.T)
-        min_x = min(after_pts[1, :]) / IMAGE_SIZE
-        max_x = max(after_pts[1, :]) / IMAGE_SIZE
-        min_y = min(after_pts[0, :]) / IMAGE_SIZE
-        max_y = max(after_pts[0, :]) / IMAGE_SIZE
-        real_bbox = [(min_x + max_x) / 2, (min_y + max_y) / 2, max_x - min_x + delta, max_y - min_y + delta] 
+        min_x = min(after_pts[1, :]) // IMAGE_SIZE
+        max_x = max(after_pts[1, :]) // IMAGE_SIZE
+        min_y = min(after_pts[0, :]) // IMAGE_SIZE
+        max_y = max(after_pts[0, :]) // IMAGE_SIZE
+        real_bbox = [(min_x + max_x) // 2, (min_y + max_y) // 2, max_x - min_x + delta, max_y - min_y + delta] 
     return list(np.round(real_bbox, 4))
 
 
@@ -71,12 +75,12 @@ def get_mask(entity_bbox, entity_type, entity_size, entity_angle):
     dummy_entity.size = Bunch(get_value=lambda : entity_size)
     dummy_entity.color = Bunch(get_value=lambda : 0)
     dummy_entity.angle = Bunch(get_value=lambda : entity_angle)
-    mask = render_entity(dummy_entity) / 255
+    mask = render_entity(dummy_entity) // 255
     return mask
 
 
-# ref: https://www.kaggle.com/stainsby/fast-tested-rle
-# ref: https://www.kaggle.com/paulorzp/run-length-encode-and-decode
+# ref: https:////www.kaggle.com//stainsby//fast-tested-rle
+# ref: https:////www.kaggle.com//paulorzp//run-length-encode-and-decode
 def rle_encode(img):
     '''
     img: numpy array, 1 - mask, 0 - background

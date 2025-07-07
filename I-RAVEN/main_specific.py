@@ -47,7 +47,11 @@ def separate(args, all_configs):
 
             root = all_configs[key]
             while True:
-                rule_groups = sample_rules()
+                rule_groups = [
+                    [Rule_Wrapper("Constant", "Type", param=None, component_idx=0),
+                     Rule_Wrapper("Progression", "Size", param=[1], component_idx=0)],
+                    [Rule_Wrapper("Distribute_Three", "Color", param=None, component_idx=1)],
+                ]
                 new_root = root.prune(rule_groups)
                 if new_root is not None:
                     break
@@ -233,15 +237,14 @@ def main():
                                  help="the proportion of the size of test set")
     args = main_arg_parser.parse_args()
 
-    all_configs = {
-                   # "center_single": build_center_single(),
+    all_configs = {"center_single": build_center_single(),
                    # "distribute_four": build_distribute_four(),
                    # "distribute_nine": build_distribute_nine(),
                    # "left_center_single_right_center_single": build_left_center_single_right_center_single(),
-                   "up_center_single_down_center_single": build_up_center_single_down_center_single(),
+                   # "up_center_single_down_center_single": build_up_center_single_down_center_single(),
                    # "in_center_single_out_center_single": build_in_center_single_out_center_single(),
                    # "in_distribute_four_out_center_single": build_in_distribute_four_out_center_single()
-    }
+                   }
 
     if not os.path.exists(args.save_dir):
         os.mkdir(args.save_dir)

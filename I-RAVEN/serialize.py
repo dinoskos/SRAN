@@ -134,4 +134,4 @@ def dom_problem(instances, rule_groups):
 
 
 
-    return ET.tostring(data)
+    return ET.tostring(data, encoding="unicode")

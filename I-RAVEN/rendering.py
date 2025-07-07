@@ -112,26 +112,26 @@ def render_entity(entity):
     # center: (columns, rows)
     center = (int(entity_bbox[1] * IMAGE_SIZE), int(entity_bbox[0] * IMAGE_SIZE))
     if entity_type == "triangle":
-        unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE / 2
+        unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE // 2
         dl = int(unit * entity_size)
         pts = np.array([[center[0], center[1] - dl], 
-                        [center[0] + int(dl / 2.0 * np.sqrt(3)), center[1] + int(dl / 2.0)], 
-                        [center[0] - int(dl / 2.0 * np.sqrt(3)), center[1] + int(dl / 2.0)]], 
+                        [center[0] + int(dl // 2.0 * np.sqrt(3)), center[1] + int(dl // 2.0)], 
+                        [center[0] - int(dl // 2.0 * np.sqrt(3)), center[1] + int(dl // 2.0)]], 
                        np.int32)
         pts = pts.reshape((-1, 1, 2))
         color = 255 - entity_color
         width = DEFAULT_WIDTH
         draw_triangle(img, pts, color, width)
     elif entity_type == "square":
-        unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE / 2
-        dl = int(unit / 2 * np.sqrt(2) * entity_size)
+        unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE // 2
+        dl = int(unit // 2 * np.sqrt(2) * entity_size)
         pt1 = (center[0] - dl, center[1] - dl)
         pt2 = (center[0] + dl, center[1] + dl)
         color = 255 - entity_color
         width = DEFAULT_WIDTH
         draw_square(img, pt1, pt2, color, width)
     elif entity_type == "pentagon":
-        unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE / 2
+        unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE // 2
         dl = int(unit * entity_size)
         pts = np.array([[center[0], center[1] - dl],
                         [center[0] - int(dl * np.cos(np.pi / 10)), center[1] - int(dl * np.sin(np.pi / 10))],
@@ -144,14 +144,14 @@ def render_entity(entity):
         width = DEFAULT_WIDTH
         draw_pentagon(img, pts, color, width)
     elif entity_type == "hexagon":
-        unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE / 2
+        unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE // 2
         dl = int(unit * entity_size)
         pts = np.array([[center[0], center[1] - dl],
-                        [center[0] - int(dl / 2.0 * np.sqrt(3)), center[1] - int(dl / 2.0)],
-                        [center[0] - int(dl / 2.0 * np.sqrt(3)), center[1] + int(dl / 2.0)],
+                        [center[0] - int(dl // 2.0 * np.sqrt(3)), center[1] - int(dl // 2.0)],
+                        [center[0] - int(dl // 2.0 * np.sqrt(3)), center[1] + int(dl // 2.0)],
                         [center[0], center[1] + dl],
-                        [center[0] + int(dl / 2.0 * np.sqrt(3)), center[1] + int(dl / 2.0)],
-                        [center[0] + int(dl / 2.0 * np.sqrt(3)), center[1] - int(dl / 2.0)]],
+                        [center[0] + int(dl // 2.0 * np.sqrt(3)), center[1] + int(dl // 2.0)],
+                        [center[0] + int(dl // 2.0 * np.sqrt(3)), center[1] - int(dl // 2.0)]],
                        np.int32)
         pts = pts.reshape((-1, 1, 2))
         color = 255 - entity_color
@@ -160,7 +160,7 @@ def render_entity(entity):
     elif entity_type == "circle":
         # Minus because of the way we show the image. See: render_panel's return
         color = 255 - entity_color
-        unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE / 2
+        unit = min(entity_bbox[2], entity_bbox[3]) * IMAGE_SIZE // 2
         radius = int(unit * entity_size)
         width = DEFAULT_WIDTH
         draw_circle(img, center, radius, color, width)
